@@ -27,50 +27,29 @@
                 foodImg.src = "images/food.png";
 
                 let food = randomXY();
+                let direction;
 
                 const gameDrawing = setInterval(function() {
                     canvasCtx.drawImage(groundImg, 0, 0);
 
                     canvasCtx.drawImage(foodImg, food.x, food.y);
 
-                    for(let i = 0; i < snake.length; i++) {
-
-                        canvasCtx.fillStyle = i === 0 ? "#FFF" : "#060";
-
-                        canvasCtx.fillRect(snake[i].x, snake[i].y, box, box);
-                        
-                        canvasCtx.strokeStyle = "#F00";
-                        canvasCtx.strokeRect(snake[i].x, snake[i].y, box, box);
-                    }
-                }, 100);
-                
-                const collisionChecker = (snake) => {
-                    for(let i = 1; i < snake.length; i++) {
-                        if(snake[0].x === snake[i].x && snake[0].y === snake[i].y) {
-                            return true;
-                        }
-                    }
-
-                    return false;
-                }
-                
-                document.addEventListener("keydown", (e) => {
                     let snakeX = snake[0].x;
                     let snakeY = snake[0].y;
 
-                    if(e.keyCode === 37) {
+                    if(direction === "left") {
                         snakeX -= box;
                     }
 
-                    if(e.keyCode === 38) {
+                    if(direction === "up") {
                         snakeY -= box;
                     }
 
-                    if(e.keyCode === 39) {
+                    if(direction === "right") {
                         snakeX += box;
                     }
 
-                    if(e.keyCode === 40) {
+                    if(direction === "down") {
                         snakeY += box;
                     }
 
@@ -96,6 +75,45 @@
                     }
                     else {
                         snake.pop();
+                    }
+
+                    for(let i = 0; i < snake.length; i++) {
+
+                        canvasCtx.fillStyle = i === 0 ? "#FFF" : "#060";
+
+                        canvasCtx.fillRect(snake[i].x, snake[i].y, box, box);
+                        
+                        canvasCtx.strokeStyle = "#F00";
+                        canvasCtx.strokeRect(snake[i].x, snake[i].y, box, box);
+                    }
+                }, 100);
+                
+                const collisionChecker = (snake) => {
+                    for(let i = 1; i < snake.length; i++) {
+                        if(snake[0].x === snake[i].x && snake[0].y === snake[i].y) {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }
+                
+                document.addEventListener("keydown", (e) => {
+
+                    if(e.keyCode === 37 && direction !== "right") {
+                        direction = "left";
+                    }
+
+                    if(e.keyCode === 38 && direction !== "down") {
+                        direction = "up";
+                    }
+
+                    if(e.keyCode === 39 && direction !== "left") {
+                        direction = "right";
+                    }
+
+                    if(e.keyCode === 40 && direction !== "up") {
+                        direction = "down";
                     }
                 });
             });
